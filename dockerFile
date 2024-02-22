@@ -1,0 +1,27 @@
+#ARG REQUIRED_PHP_EXTS="grpc mongodb-stable gd"
+
+FROM docker.pinggo.vn/pinggo/docker-laravel-base:2.0.5
+USER root
+
+RUN apk add --no-cache zip libzip-dev php-zip
+RUN docker-php-ext-configure zip
+RUN docker-php-ext-install zip
+RUN docker-php-ext-install pdo pdo_mysql
+
+#ARG REQUIRED_PHP_EXTS
+
+#Install required PHP extension
+#RUN install-php-extensions $REQUIRED_PHP_EXTS
+
+WORKDIR /home/public_html/app
+
+RUN chown -R nginx /home/public_html/app
+
+COPY composer.json composer.lock ./
+
+RUN composer install --prefer-dist --no-progress --no-scripts --no-autoloader --no-dev
+
+COPY --chown=nginx . ./
+
+RUN cp .env.production .env \
+    && composer install --no-dev -o --ignore-platform-reqs
