@@ -1,9 +1,11 @@
 #ARG REQUIRED_PHP_EXTS="grpc mongodb-stable gd"
 
-FROM docker.pinggo.vn/pinggo/docker-laravel-base:2.0.5
-USER root
+FROM php:8.2-cli
 
-RUN apk add --no-cache zip libzip-dev php-zip
+#install some base extensions
+RUN apt-get install -y \
+        libzip-dev \
+        zip \
 RUN docker-php-ext-configure zip
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install pdo pdo_mysql
