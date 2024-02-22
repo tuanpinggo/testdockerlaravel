@@ -1,16 +1,6 @@
 #ARG REQUIRED_PHP_EXTS="grpc mongodb-stable gd"
 
-FROM php:8.2-cli
-
-#install some base extensions
-RUN docker-php-ext-configure zip
-RUN docker-php-ext-install zip
-RUN docker-php-ext-install pdo pdo_mysql
-
-#ARG REQUIRED_PHP_EXTS
-
-#Install required PHP extension
-#RUN install-php-extensions $REQUIRED_PHP_EXTS
+FROM bitnami/laravel:latest
 
 WORKDIR /home/public_html/app
 
