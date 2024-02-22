@@ -2,15 +2,3 @@
 
 FROM bitnami/laravel:latest
 
-WORKDIR /home/public_html/app
-
-RUN chown -R nginx /home/public_html/app
-
-COPY composer.json composer.lock ./
-
-RUN composer install --prefer-dist --no-progress --no-scripts --no-autoloader --no-dev
-
-COPY --chown=nginx . ./
-
-RUN cp .env.production .env \
-    && composer install --no-dev -o --ignore-platform-reqs
